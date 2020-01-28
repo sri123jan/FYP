@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>Sign Up</title>
+        <%- include('partials/uikit') %>
+        <link rel="stylesheet" href="/assets/css/style.css">
+    </head>
+    
+    <body>
+        <div class="" uk-grid style="height: 100vh;">
+            
+            <div class="uk-width-1-5 uk-hidden@l">
+
+            </div>
+            <div class="uk-width-3-5">
+                <div uk-grid>
+                    <div class="uk-width-1-5"></div>
+                    <div class="uk-width-3-5">
+                        <div style="margin-left: 10%; width: 80%">
+                            <div class="uk-margin-large-top uk-text-lead uk-text-center signup-text">
+                                Sign Up
+                            </div>
+                            
+                            <form method="post">
+                                <!-- input fields -->
+                                <div class="uk-margin-medium-top signup-form">
+                                    <label>Username</label><br>
+                                    <input name="username" class="uk-margin-small-top" autocomplete="off" required>
+                                    <% if (msg) { %>
+                                        <div class="uk-alert-danger alert" uk-alert>
+                                            <a class="uk-alert-close" uk-close></a>
+                                            <p>
+                                                <%= msg %>
+                                            </p>
+                                        </div>
+                                    <% } %>
+                                </div>  
+                                <div class="uk-margin-small-top signup-form">
+                                    <label>Password</label><br>
+                                    <input name="password" class="uk-margin-small-top" autocomplete="off" required>
+                                </div>
+                                <div class="uk-margin-small-top signup-form">
+                                    <label>Email</label><br>
+                                    <input name="email" class="uk-margin-small-top" autocomplete="off" required>
+                                </div>
+    
+                                <!-- button -->
+                                <div class="uk-margin-medium-top uk-text-center">
+                                    <button class="uk-button-primary btn-signup">Sign Up</button>
+                                </div>
+                            </form>
+    
+                            <div class="uk-margin-small-top uk-text-center">
+                                <h5>Already have an account? <a href="/login">Login</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        
+            <!-- image -->
+            <div class="uk-width-2-5 uk-visible@l img-game uk-background-cover" style="background-image: url('/assets/images/game.png');">
+                
+            </div>
+        </div>
+        
+    </body>
+    
+</html>

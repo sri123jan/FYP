@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Log In</title>
+        <%- include('partials/uikit') %>
+        <link rel="stylesheet" href="/assets/css/style.css">
+    </head>
+    
+    <body>
+        <div uk-grid style="height: 100vh;">
+            
+            <div class="uk-width-1-5 uk-hidden@l">
+
+            </div>
+            <div class="uk-width-3-5">
+                <div uk-grid>
+                    <div class="uk-width-1-5 uk-visible@l"></div>
+                    <div class="uk-width-3-5@l">
+                        <div style="margin-left: 10%; width: 80%">
+                            <div class="uk-margin-large-top uk-text-lead uk-text-center signup-text">
+                                Log In
+                            </div>
+                            
+                            <form action='/login' method="post">
+                                <!-- input fields -->
+                                <div class="uk-margin-medium-top signup-form">
+                                    <label>Username</label><br>
+                                    <input name="username" class="uk-margin-small-top" autocomplete="off" required>
+                                </div>  
+                                <div class="uk-margin-medium-top signup-form">
+                                    <label>Password</label><br>
+                                    <input name="password" class="uk-margin-small-top" autocomplete="off" required>
+                                </div>
+    
+                                <!-- button -->
+                                <div class="uk-margin-medium-top uk-text-center">
+                                    <button class="uk-button-primary btn-signup">Log In</button>
+                                </div>
+                            </form>
+    
+                            <div class="uk-margin-medium-top uk-text-center">
+                                <h5>Don't have an account? <a href="/signup">Sign Up</a></h5>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        
+            <!-- image -->
+            <div class="uk-width-2-5 uk-visible@l img-game uk-background-cover" style="background-image: url('/assets/images/game.png');">
+                
+            </div>
+            
+        </div>
+        
+        
+    </body>
+</html>

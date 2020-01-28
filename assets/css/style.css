@@ -1,0 +1,39 @@
+.signup-text{
+    font-size: 2.2em;
+}
+.signup-form{
+    font-size: 1.2em;
+}
+input{
+    padding: 10px 2px;
+    width: 100%;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    outline: none;
+    border-color: #BBB;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+.img-game{
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.btn-signup, .btn-login{
+    padding: 8px 50px;
+    font-size: large;
+}
+@media(max-width: 1000px){
+    input{
+        width: 90%;
+    }
+}
+.alert{
+    font-size: 13px;
+    padding: 10px
+}
+.alert a svg{
+    height: 10px;
+    line-height: 100px;
+}
