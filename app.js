@@ -50,33 +50,42 @@ app.set('views', [path.join(__dirname, 'views'),
                       path.join(__dirname, 'views/broadcaster/'), 
                       path.join(__dirname, 'views/viewer/')]);
 
-controller(app);
+
 
 server.listen(port, function(){
     console.log('Connection made at '+ port);
 })
 
-let broadcaster;
+let broadcaster = {};
+let watcher = {};
+controller(app, broadcaster);
 io.sockets.on('error', e => console.log(e));
 
 io.sockets.on('connection', function (socket) {
-  socket.on('broadcaster', function () {
-    broadcaster = socket.id;
-    socket.broadcast.emit('broadcaster');
-  });
-  socket.on('watcher', function () {
-    socket.to(broadcaster).emit('watcher', socket.id);
-  });
-  socket.on('offer', function (id /* of the watcher */, message) {
-    socket.to(id).emit('offer', socket.id /* of the broadcaster */, message);
-  });
-  socket.on('answer', function (id /* of the broadcaster */, message) {
-    socket.to(id).emit('answer', socket.id /* of the watcher */, message);
-  });
-  socket.on('candidate', function (id, message) {
-    socket.to(id).emit('candidate', socket.id, message);
-  });
-  socket.on('disconnect', function() {
-    socket.to(broadcaster).emit('bye', socket.id);
-  });
+    socket.on('broadcaster', function (username) {
+      broadcaster[username] = socket.id;
+      
+      socket.emit('broadcaster');
+    });
+    socket.on('watcher', function (username) {
+      watcher[username] = socket.id;
+      socket.to(broadcaster[username]).emit('watcher', socket.id);
+    });
+    socket.on('offer', function (id /* of the watcher */, message, data) {
+      socket.to(id).emit('offer', socket.id /* of the broadcaster */, message, data);
+    });
+    socket.on('answer', function (id /* of the broadcaster */, message) {
+      socket.to(id).emit('answer', socket.id /* of the watcher */, message);
+    });
+    socket.on('candidate', function (id, message) {
+      socket.to(id).emit('candidate', socket.id, message);
+    });
+    socket.on('disconnect', function() {
+      for (var k in broadcaster){
+        if (broadcaster[k] === socket.id){
+          delete broadcaster[k];
+        }
+      }
+      socket.to(socket.id).emit('close', socket.id);
+    });
 });

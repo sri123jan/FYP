@@ -29,7 +29,7 @@
          <button class="btn btn-link btn-sm text-secondary order-1 order-sm-0" id="sidebarToggle">
          <i class="fas fa-bars"></i>
          </button> &nbsp;&nbsp;
-         <a class="navbar-brand mr-1" href="/index"><img class="img-fluid" alt="" src="/assets/img/logo.png"></a>
+         <a class="navbar-brand mr-1" href="/"><img class="img-fluid" alt="" src="/assets/img/logo.png"></a>
          <!-- Navbar Search -->
          <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 osahan-navbar-search">
             <div class="input-group">
@@ -210,119 +210,23 @@
                                  <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
                               </div>
                            </div>
-                           <h6>Channels Categories</h6>
+                           <h6>Live Now</h6>
                         </div>
                      </div>
                      <div class="col-md-12">
                         <div class="owl-carousel owl-carousel-category">
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s1.png" alt="">
-                                    <h6>Your Life</h6>
-                                    <p>74,853 views</p>
-                                 </a>
+                           <% liveStreamer.forEach(streamer => { %>
+                              
+                              <div class="item">
+                                 <div class="category-item">
+                                    <a href="/<%= streamer %>">
+                                       <img class="img-fluid" src="/assets/img/s1.png" alt="">
+                                       <h6><%= streamer %> </h6>
+                                       <p>74,853 views</p>
+                                    </a>
+                                 </div>
                               </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s2.png" alt="">
-                                    <h6>Unboxing Cool</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s3.png" alt="">
-                                    <h6>Service Reviewing</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s4.png" alt="">
-                                    <h6>Gaming <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s5.png" alt="">
-                                    <h6>Technology Tutorials</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s6.png" alt="">
-                                    <h6>Singing</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s7.png" alt="">
-                                    <h6>Cooking</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s8.png" alt="">
-                                    <h6>Traveling</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s1.png" alt="">
-                                    <h6>Education</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s2.png" alt="">
-                                    <h6>Noodles, Sauces & Instant Food</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s3.png" alt="">
-                                    <h6>Comedy <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
-                           <div class="item">
-                              <div class="category-item">
-                                 <a href="#">
-                                    <img class="img-fluid" src="/assets/img/s4.png" alt="">
-                                    <h6>Lifestyle Advice</h6>
-                                    <p>74,853 views</p>
-                                 </a>
-                              </div>
-                           </div>
+                           <% }); %> 
                         </div>
                      </div>
                   </div>
