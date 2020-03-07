@@ -7,13 +7,23 @@ var routes = function(app){
     });
     
     app.get('/login', (req, res) => {
-        res.render('login');
+        res.render('login', {msg: ''});
     });
     
-    app.post('/login',
-        passport.authenticate('local', { failureRedirect: '/login' }),
-        function(req, res) {
-            res.redirect('/');
+    app.post('/login', function(req, res) {
+        passport.authenticate('local', function(err, user) {
+            if (err) { return err }
+            if (!user) {
+                res.render('login', {msg: 'Invalid username or password'})
+            }
+            req.logIn(user, function(err) {
+                if (err) { return err; }
+                if (user.usertype=="Streamer"){
+                    res.redirect('/broadcast/'+user.username);
+                }
+                res.redirect('/');
+            });
+          })(req, res);
     });
     
     app.get('/logout', function(req, res){
@@ -26,7 +36,7 @@ var routes = function(app){
     });
 
     app.post('/signup', function(req, res){
-        User.findOne({ username: req.body.username }, function(err, user){
+        User.findOne({ email: req.body.email }, function(err, user){
             if (err) { return err }
             if(!user){
                 var newuser = new User(req.body);
@@ -34,9 +44,19 @@ var routes = function(app){
                 res.redirect('/login');
             }
             else{
-                res.render('signup', {msg: 'User already exists'})
+                res.render('signup', {msg: 'Email already in use'})
             }
         });
+    });
+
+    app.get('/broadcast/:username', function(req, res){
+        res.render('broadcast', { user: req.user, username: req.params.username });
+    });
+    app.get('/:username', function(req, res){
+        if(req.user == null){
+            res.redirect('login');
+        }
+        res.render('video', {username: req.params.username});
     });
 };
 

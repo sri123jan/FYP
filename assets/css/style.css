@@ -1,39 +1,15 @@
-.signup-text{
-    font-size: 2.2em;
-}
-.signup-form{
-    font-size: 1.2em;
-}
-input{
-    padding: 10px 2px;
-    width: 100%;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    outline: none;
-    border-color: #BBB;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-.img-game{
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
+.bg-pri{
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
 }
 
-.btn-signup, .btn-login{
-    padding: 8px 50px;
-    font-size: large;
+.bg-lig{
+    background-color: #f0f0f0;
+    border-radius: 5px;
 }
-@media(max-width: 1000px){
-    input{
-        width: 90%;
-    }
-}
-.alert{
-    font-size: 13px;
-    padding: 10px
-}
-.alert a svg{
-    height: 10px;
-    line-height: 100px;
+
+.chat img{
+    border-radius: 50%;
+    width: 35px;
 }
