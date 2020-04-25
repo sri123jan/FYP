@@ -1,24 +1,66 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><h3>VideoStream</h3></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand navbar-light bg-white static-top osahan-nav sticky-top">
+   &nbsp;&nbsp; 
+   <button class="btn btn-link btn-sm text-secondary order-1 order-sm-0" id="sidebarToggle">
+      <i class="fas fa-bars"></i>
+   </button> &nbsp;&nbsp;
+   <a class="navbar-brand mr-1" href="/"><img class="img-fluid" alt="" src="/assets/img/logo.png"></a>
+    <!-- Navbar Search -->
   
-    <div class="collapse navbar-collapse ml-3" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Subscribed</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Manage Account</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+   <% if (user.usertype == "Streamer") { %>
+      <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 osahan-navbar-search" style="visibility: hidden;">
+         <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <div class="input-group-append">
+               <button class="btn btn-light" type="button">
+               <i class="fas fa-search"></i> 
+               </button>
+            </div>
+         </div>
       </form>
-    </div>
-  </nav>
+   <% }else{ %>
+      <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 osahan-navbar-search">
+         <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <div class="input-group-append">
+               <button class="btn btn-light" type="button">
+               <i class="fas fa-search"></i> 
+               </button>
+            </div>
+         </div>
+      </form>
+   <% } %> 
+  <!-- Navbar -->
+  <ul class="navbar-nav ml-auto ml-md-0 osahan-right-navbar">
+     
+   <% if (user.usertype != "Streamer") { %>
+      <li class="nav-item dropdown no-arrow mx-1">
+         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-bell fa-fw" style="font-size: 16px;"></i>
+            <span class="badge badge-danger" id="notificationCount"></span>
+         </a> 
+         <div class="dropdown-menu dropdown-menu-right" id="notification" aria-labelledby="alertsDropdown">
+            
+         </div>
+      </li>
+   <% } %>
+      <li class="nav-item dropdown no-arrow osahan-right-navbar-user">
+         <a class="nav-link dropdown-toggle user-dropdown-link" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img alt="Avatar" src="/<%= user.image %>">
+            <span id="viewer"><%= user.username %></span>
+         </a>
+         <div class="dropdown-menu dropdown-menu-right" style="width: 200px;" aria-labelledby="userDropdown">
+            <% if (user.usertype == "Streamer") { %>
+               <a class="dropdown-item" href="/broadcast/account"><i class="fas fa-fw fa-user-circle"></i> &nbsp; My Account</a>
+               <a class="dropdown-item" href="/"><i class="fas fa-fw fa-video"></i> &nbsp; Dashboard</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item logout" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-fw fa-sign-out-alt"></i> &nbsp; Logout</a>
+            <% }else{ %>
+               <a class="dropdown-item" href="/account"><i class="fas fa-fw fa-user-circle"></i> &nbsp; My Account</a>
+               <a class="dropdown-item" href="/channels"><i class="fas fa-fw fa-video"></i> &nbsp; Subscriptions</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item logout" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-fw fa-sign-out-alt"></i> &nbsp; Logout</a>
+            <% } %>
+         </div>
+      </li>
+  </ul>
+</nav>

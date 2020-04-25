@@ -21,6 +21,17 @@ const UserSchema = new Schema({
     usertype: {
         type: String,
         required: true
+    },
+    isStreaming: {
+        type: Boolean,
+        default: false
+    },
+    liveVideoId: {
+        type: String,
+        default: 0
+    },
+    image:{
+        type: String
     }
 });
 

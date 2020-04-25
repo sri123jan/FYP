@@ -44,7 +44,9 @@ app.use(passport.session());
 
 app.set('view engine', 'ejs');
 
+app.use('/uploads', express.static('uploads'));
 app.use('/assets', express.static('assets'));
+
 
 app.set('views', [path.join(__dirname, 'views'),
                       path.join(__dirname, 'views/broadcaster/'), 
@@ -67,8 +69,8 @@ io.sockets.on('connection', function (socket) {
       
       socket.emit('broadcaster');
     });
-    socket.on('watcher', function (username) {
-      watcher[username] = socket.id;
+    socket.on('watcher', function (username, viewer) {
+      watcher[viewer] = [socket.id, username];
       socket.to(broadcaster[username]).emit('watcher', socket.id);
     });
     socket.on('offer', function (id /* of the watcher */, message, data) {
@@ -88,4 +90,14 @@ io.sockets.on('connection', function (socket) {
       }
       socket.to(socket.id).emit('close', socket.id);
     });
+
+    socket.on('chat', function(msg, username, viewer){
+      for (var k in watcher){
+        if(watcher[k][1] == username){
+          socket.to(watcher[k][0]).emit('chater', msg, viewer);
+        }
+      }
+      
+    });
+    
 });

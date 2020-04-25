@@ -21,8 +21,9 @@ const VideoSchema = new Schema({
         type: String,
         required: true
     },
-    tags: {
-        type: String
+    viewsCount: {
+        type: Number,
+        default: 0
     }
 });
 
