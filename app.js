@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 
-var port = 3000;
+var port = 4000;
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
