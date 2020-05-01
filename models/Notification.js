@@ -15,5 +15,6 @@ const NotificationSchema = new Schema({
     }
 });
 
+
 const Notification = mongoose.model('notification', NotificationSchema);
 module.exports = Notification;
