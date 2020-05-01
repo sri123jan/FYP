@@ -10,6 +10,8 @@ const mongoose = require('mongoose');
 const controller = require('./controller/controller');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 
 mongoose.connect('mongodb://localhost/test', {useUnifiedTopology: true,
@@ -38,7 +40,7 @@ passport.deserializeUser(function(id, done) {
 
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true, store: new MongoStore({url: 'mongodb://localhost/test'}) }));
 app.use(passport.initialize());
 app.use(passport.session());
 
