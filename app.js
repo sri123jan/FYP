@@ -15,7 +15,7 @@ const MongoStore = require('connect-mongo')(session);
 
 
 //mongoose.connect('mongodb://localhost/test', {useUnifiedTopology: true,useNewUrlParser: true});
-mongoose.connect('mongodb+srv://test:test@cluster0-io6xc.mongodb.net/test?retryWrites=true&w=majority', {useUnifiedTopology: true,
+mongoose.connect(process.env.MONGOLAB_URI, {useUnifiedTopology: true,
 useNewUrlParser: true});
 
 passport.use(new LocalStrategy(
