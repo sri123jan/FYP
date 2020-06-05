@@ -43,18 +43,26 @@
                 </a>
             </li>
             <li class="nav-item channel-sidebar-list">
-                <h6>SUBSCRIPTIONS</h6>
-                <ul> 
-                   <% for( let i = 0; i < subscribersList.length; i++ ) { %>
-                      <li>
-                         <a href="/individual/<%= subscribersList[i].channel %>">
-                            <img class="img-fluid" alt="" src="/assets/img/s1.png">
-                            <%= subscribersList[i].channel %>  
-                         </a>
-                      </li>
-                   <% } %>
-                </ul>
-             </li>
+               <h6>SUBSCRIPTIONS</h6>
+               <ul> 
+                  <% for( let i = 0; i < subscribersList.length; i++ ) { %>
+                     <li>
+                        <a href="/individual/<%= subscribersList[i].channel %>">
+                           <% channelList.forEach((group) => { %>
+                              <% if(group.username == subscribersList[i].channel){ %>
+                                 <% if (group.image == undefined) { %>
+                                    <img class="img-fluid" alt="" src="uploads/user.png">
+                                 <% }else{ %>
+                                    <img class="img-fluid" alt="" src="<%= group.image %>">
+                                 <% } %>
+                              <% } %>  
+                           <% }) %>
+                           <%= subscribersList[i].channel %>  
+                        </a>
+                     </li>
+                  <% } %>
+               </ul>
+            </li>
         </ul>
         <div id="content-wrapper">
             <div class="container-fluid pb-0">

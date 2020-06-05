@@ -50,7 +50,7 @@ var routes = function(app, broadcaster){
                         }
                     }], (err, result) => {
                         Subscriber.find({username: req.user.username}).then((subscribers) => {
-                            res.render('home', { user: req.user, liveStreamer: liveStreamer, subscribersList: subscribers, channelList: channelList, count: result});
+                            res.render('home', { user: req.user, liveStreamer: liveStreamer, subscribersList: subscribers, channelList: channelList, count: result, search: ""});
                         })
                     }
                 )
@@ -59,17 +59,53 @@ var routes = function(app, broadcaster){
     });
 
     app.post('/', (req, res) =>{
-        if(req.body.subscribed == "yes"){
-            var subscriber = new Subscriber();
-            subscriber.channel = req.body.channel;
-            subscriber.username = req.user.username;
-            subscriber.save();
-            res.end();
+        if(req.body.search == undefined){
+            if(req.body.subscribed == "yes"){
+                var subscriber = new Subscriber();
+                subscriber.channel = req.body.channel;
+                subscriber.username = req.user.username;
+                subscriber.save();
+                res.end();
+            }
+            else{
+                Subscriber.findOneAndDelete({channel: req.body.channel, username: req.user.username}).then(() =>{
+                    res.end('/');
+                });
+            }
         }
         else{
-            Subscriber.findOneAndDelete({channel: req.body.channel, username: req.user.username}).then(() =>{
-                res.end('/');
+            var liveStreamer = [];
+            User.find({usertype: "Streamer"}, function(err, users){
+                if (users){
+                    Object.keys(users).forEach(function(key){
+                        if (broadcaster[users[key].username]){
+                            liveStreamer.push(users[key]);
+                        }
+                    });
+                }
             });
+
+            var channelList = [];
+            User.find({usertype: "Streamer"}).then(function(users){
+                for (i=0; i< users.length; i++){
+                    if(users[i].username.includes(req.body.search)){
+
+                        channelList.push(users[i]);
+                    }
+                }
+                Subscriber.aggregate(
+                    [{
+                        $group: {
+                            _id: "$channel",
+                            count: { $sum: 1 }
+                        }
+                    }], (err, result) => {
+                        Subscriber.find({username: req.user.username}).then((subscribers) => {
+                            res.render('home', { user: req.user, liveStreamer: liveStreamer, subscribersList: subscribers, channelList: channelList, count: result, search: req.body.search});
+                        })
+                    }
+                )
+            })
         }
     });
     
@@ -106,12 +142,19 @@ var routes = function(app, broadcaster){
         User.findOne({ email: req.body.email }, function(err, user){
             if (err) { return err }
             if(!user){
-                var newuser = new User(req.body);
-                newuser.save();
-                res.redirect('/login');
+                User.findOne({ username: req.body.username}, (err, user1) => {
+                    if(!user1){
+                        var newuser = new User(req.body);
+                        newuser.save();
+                        res.render('signup', {msg: 'Successfully registered'});
+                    }
+                    else{
+                        res.render('signup', {msg: 'Username already in use', user: req.body });
+                    }
+                });
             }
             else{
-                res.render('signup', {msg: 'Email already in use'})
+                res.render('signup', {msg: 'Email already in use', user: req.body });
             }
         });
     });
@@ -179,7 +222,11 @@ var routes = function(app, broadcaster){
         res.send();
     });
 
-    
+    app.post('/user/image', function(req, res){
+        User.findOne({username: req.body.username}, function(err, user){
+            res.send({image: user.image})
+        });
+    })
 
     //viewer
     app.get('/channels', function(req, res){
@@ -187,18 +234,25 @@ var routes = function(app, broadcaster){
             res.redirect('login');
         }
         else{
-            Subscriber.aggregate(
-                [{
-                    $group: {
-                        _id: "$channel",
-                        count: { $sum: 1 }
-                    }
-                }], (err, result) => {
-                    Subscriber.find({username: req.user.username}).then((subscribers) => {
-                        res.render('channels', { user: req.user, subscribersList: subscribers, result: result});
-                    })
+            var channelList = [];
+            User.find({usertype: "Streamer"}).then(function(users){
+                for (i=0; i< users.length; i++){
+                    channelList.push(users[i]);
                 }
-            )
+                
+                Subscriber.aggregate(
+                    [{
+                        $group: {
+                            _id: "$channel",
+                            count: { $sum: 1 }
+                        }
+                    }], (err, result) => {
+                        Subscriber.find({username: req.user.username}).then((subscribers) => {
+                            res.render('channels', { user: req.user, subscribersList: subscribers, channelList: channelList, result: result});
+                        })
+                    }
+                )
+            })
         }
     });
 
@@ -244,27 +298,39 @@ var routes = function(app, broadcaster){
     });
 
     app.get('/account', (req, res) =>{
-        Subscriber.find().then(function(subscribers){
-            res.render('account', {user: req.user, error: '', success: '', subscribersList: subscribers});
-        });
+        var channelList = [];
+        User.find({usertype: "Streamer"}).then(function(users){
+            for (i=0; i< users.length; i++){
+                channelList.push(users[i]);
+            }
+            Subscriber.find({username: req.user.username}).then(function(subscribers){
+                res.render('account', {user: req.user, error: '', success: '', subscribersList: subscribers, channelList: channelList});
+            });
+        })
     });
 
     app.post('/account', upload.single('avatar'), (req, res) =>{
-        Subscriber.find().then(function(subscribers){
-            User.findOne({username: req.user.username}, (err, user) => {
-                if(req.body.password == req.body.password1){
-                    if(req.file){
-                        user.image = req.file.path;
+        var channelList = [];
+        User.find({usertype: "Streamer"}).then(function(users){
+            for (i=0; i< users.length; i++){
+                channelList.push(users[i]);
+            }
+            Subscriber.find({username: req.user.username}).then(function(subscribers){
+                User.findOne({username: req.user.username}, (err, user) => {
+                    if(req.body.password == req.body.password1){
+                        if(req.file){
+                            user.image = req.file.path;
+                        }
+                        user.name = req.body.name;
+                        user.email = req.body.email;
+                        user.passpord = req.body.password;
+                        user.save();
+                        res.render('account', {user: user, success: "Account updated successfully", error: '', subscribersList: subscribers, channelList: channelList});
                     }
-                    user.name = req.body.name;
-                    user.email = req.body.email;
-                    user.passpord = req.body.password;
-                    user.save();
-                    res.render('account', {user: user, success: "Account updated successfully", error: '', subscribersList: subscribers});
-                }
-                else{
-                    res.render('account', {user: req.user, error: "Password didn't match", success: '', subscribersList: subscribers});
-                }
+                    else{
+                        res.render('account', {user: req.user, error: "Password didn't match", success: '', subscribersList: subscribers, channelList: channelList});
+                    }
+                })
             })
         })
     });
@@ -292,14 +358,20 @@ var routes = function(app, broadcaster){
                         Video.findOne({_id: user.liveVideoId}, (er, video) => {
                             video.viewsCount += 1;
                             video.save();
-                            Subscriber.find({username: req.user.username}).then((subscribers) => {
-                                Subscriber.findOne({username: req.user.username, channel: req.params.username}, (eerr, subs) => {
-                                    if(subs){
-                                        res.render('video', {user: req.user, broadcaster: video, subscribersList: subscribers, subs: true, username: req.params.username, video: video, time: timePassed, viewer: req.user.username});
-                                    }
-                                    else{
-                                        res.render('video', {user: req.user, broadcaster: video, subscribersList: subscribers, subs: false, username: req.params.username, video: video, time: timePassed, viewer: req.user.username});
-                                    }
+                            var channelList = [];
+                            User.find({usertype: "Streamer"}).then(function(users){
+                                for (i=0; i< users.length; i++){
+                                    channelList.push(users[i]);
+                                }
+                                Subscriber.find({username: req.user.username}).then((subscribers) => {
+                                    Subscriber.findOne({username: req.user.username, channel: req.params.username}, (eerr, subs) => {
+                                        if(subs){
+                                            res.render('video', {user: req.user, channelList: channelList, broadcaster: video, subscribersList: subscribers, subs: true, username: req.params.username, video: video, time: timePassed, viewer: req.user.username});
+                                        }
+                                        else{
+                                            res.render('video', {user: req.user, channelList: channelList, broadcaster: video, subscribersList: subscribers, subs: false, username: req.params.username, video: video, time: timePassed, viewer: req.user.username});
+                                        }
+                                    })
                                 })
                             })
                         })

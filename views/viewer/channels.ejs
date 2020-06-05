@@ -46,7 +46,16 @@
                   <% for( let i = 0; i < subscribersList.length; i++ ) { %>
                      <li>
                         <a href="/individual/<%= subscribersList[i].channel %>">
-                           <img class="img-fluid" alt="" src="/assets/img/s1.png">
+                           <% channelList.forEach((group) => { %>
+                              <% if(group.username == result[i]._id){ %>
+                                 <% if (group.image == undefined) { %>
+                                    <img class="img-fluid" alt="" src="uploads/user.png">
+                                 <% }else{ %>
+                                    <img class="img-fluid" alt="" src="<%= group.image %>">
+                                 <% } %>
+                              <% } %>  
+                           <% }) %>
+                           
                            <%= subscribersList[i].channel %>  
                         </a>
                      </li>
@@ -78,7 +87,15 @@
                      <div class="channels-card">
                         <form id="subscribe">
                            <div class="channels-card-image">
-                              <a href="/individual/<%= result[i]._id %>"><img class="img-fluid" src="/assets/img/s2.png" alt=""></a>
+                              <% channelList.forEach((group) => { %>
+                                 <% if(group.username == result[i]._id){ %>
+                                    <% if (group.image == undefined) { %>
+                                       <a href="/individual/<%= channelList[i].username %>"><img class="img-fluid" src="uploads/user.png" alt=""></a>
+                                    <% }else{ %>
+                                       <a href="/individual/<%= channelList[i].username %>"><img class="img-fluid" src="<%= group.image %>" alt=""></a>
+                                    <% } %>
+                                 <% } %>  
+                              <% }) %>
                               <input type="hidden" class="subscribed">
                               <div class="channels-card-image-btn">
                                  <input type="hidden" class="subscribed">

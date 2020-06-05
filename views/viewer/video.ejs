@@ -27,7 +27,7 @@
       	<div id="wrapper">
         	<!-- Sidebar -->
 			<ul class="sidebar navbar-nav">
-				<!-- <li class="nav-item active">
+				<li class="nav-item active">
 					<a class="nav-link" href="/">
 						<i class="fas fa-fw fa-home"></i>
 						<span>Home</span>
@@ -49,16 +49,24 @@
 				<li class="nav-item channel-sidebar-list">
 					<h6>SUBSCRIPTIONS</h6>
 					<ul> 
-						<% for( let i = 0; i < subscribersList.length; i++ ) { %>
-							<li>
-								<a href="/individual/<%= subscribersList[i].channel %>">
-								<img class="img-fluid" alt="" src="/assets/img/s1.png">
+					   <% for( let i = 0; i < subscribersList.length; i++ ) { %>
+						  <li>
+							 <a href="/individual/<%= subscribersList[i].channel %>">
+								<% channelList.forEach((group) => { %>
+								   <% if(group.username == subscribersList[i].channel){ %>
+									  <% if (group.image == undefined) { %>
+										 <img class="img-fluid" alt="" src="uploads/user.png">
+									  <% }else{ %>
+										 <img class="img-fluid" alt="" src="<%= group.image %>">
+									  <% } %>
+								   <% } %>  
+								<% }) %>
 								<%= subscribersList[i].channel %>  
-								</a>
-							</li>
-						<% } %>
+							 </a>
+						  </li>
+					   <% } %>
 					</ul>
-				</li> -->
+				</li>
 			</ul>
 		 
 			<div id="content-wrapper">
@@ -82,27 +90,29 @@
 										<h2><%= video.title %></h2>
 										<p class="mb-0"><i class="fas fa-eye"></i> <%= broadcaster.viewsCount %> views</p>
 									</div>
-									<div class="single-video-author box mb-3">
-										<div class="float-right">
-											<button class="btn btn-danger" onclick="subscribe(this, '<%= username %>')" type="button">
-												<% if(subs){ %>
-													Unsubscribe
-												<% }else{ %>
-													Subscribe
-												<% } %>
-											</button>
+									<div class="desc1">
+										<div class="single-video-author box mb-3">
+											<div class="float-right">
+												<button class="btn btn-danger" onclick="subscribe(this, '<%= username %>')" type="button">
+													<% if(subs){ %>
+														Unsubscribe
+													<% }else{ %>
+														Subscribe
+													<% } %>
+												</button>
+											</div>
+											<img class="img-fluid" src="/assets/img/s4.png" alt="">
+											<p><a href="#"><strong><%= username %></strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
+											<small style="font-size: 0.9em;">Started Streaming <%= time %></small>
 										</div>
-										<img class="img-fluid" src="/assets/img/s4.png" alt="">
-										<p><a href="#"><strong><%= username %></strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
-										<small style="font-size: 0.9em;">Started Streaming <%= time %></small>
-									</div>
-									<div class="single-video-info-content box mb-3">
-										<h6>Language:</h6>
-										<p><%= video.language %></p>
-										<h6>Category :</h6>
-										<p><%= video.tags %></p>
-										<h6>About :</h6>
-										<p><%= video.description %></p>
+										<div class="single-video-info-content box mb-3">
+											<h6>Language:</h6>
+											<p><%= video.language %></p>
+											<h6>Category :</h6>
+											<p><%= video.tags %></p>
+											<h6>About :</h6>
+											<p><%= video.description %></p>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -110,24 +120,60 @@
 							<!-- Right -->
 							<div class="col-md-4 chat">
 								<div class="bg-white shadow" id="chat-box" style="height: 350px; overflow-y: scroll;">
-                                    <div>
+                                    <!-- <div>
 										<div class="col-md-4 mt-2 py-2 text-center chat-user" style="float: left;">
-											<!-- <img alt="Avatar" src="/assets/img/user.png"> -->
-											NinjaNinja
+											<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Srijan">
+												<img alt="Avatar" style="height: 30px; width: 30px; pointer-events: none;" src="/uploads\1588340002309-Screenshot_2020-05-01-00-34-17-304_com.instagram.android.jpg">
+											</span>
 										</div>
 										<div class="col-md-7 bg-pri py-2 mt-2 chat-text" style="float: left;">
 											Test, which is a new approach to have. Test, which is a new approach to have
 										</div>
-										
 									</div>
-									<div class="offset-md-4 col-md-7 bg-lig py-2 mt-2 mychat-text" style="float: left;">
-										Test, which is a new approach to haveTest, which is a new approach to have
-									</div>
+									<div>
+										<div class="col-md-4 mt-2 py-2 text-center chat-user" style="float: left;">
+											<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Srijan">
+												<img alt="Avatar" style="height: 30px; width: 30px; pointer-events: none;" src="/uploads\1588340002309-Screenshot_2020-05-01-00-34-17-304_com.instagram.android.jpg">
+											</span>
+										</div>
+										<div class="col-md-7 bg-lig py-2 mt-2 mychat-text" style="float: left;">
+											Test, which is a new approach to haveTest, which is a new approach to have
+										</div>
+									</div>									 -->
 								</div>
 								
 								<div class="row pt-1 px-3">
 									<input class="col-md-9 form-control" id="chat">
 									<button class="col-md-3 btn btn-success" onclick="sendMessage()">Send</button>
+								</div>
+							</div>
+
+							<div class="col-md-8">
+								<div class="single-video-left">
+									<div class="desc2 mt-5">
+										<div class="single-video-author box mb-3">
+											<div class="float-right">
+												<button class="btn btn-danger" onclick="subscribe(this, '<%= username %>')" type="button">
+													<% if(subs){ %>
+														Unsubscribe
+													<% }else{ %>
+														Subscribe
+													<% } %>
+												</button>
+											</div>
+											<img class="img-fluid" src="/assets/img/s4.png" alt="">
+											<p><a href="#"><strong><%= username %></strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
+											<small style="font-size: 0.9em;">Started Streaming <%= time %></small>
+										</div>
+										<div class="single-video-info-content box mb-3">
+											<h6>Language:</h6>
+											<p><%= video.language %></p>
+											<h6>Category :</h6>
+											<p><%= video.tags %></p>
+											<h6>About :</h6>
+											<p><%= video.description %></p>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -234,12 +280,40 @@
 	});
 
 	function sendMessage(){
-		var myMsg = document.createElement("div");
-		myMsg.className = 'offset-md-4 col-md-7 bg-lig py-2 mt-2 mychat-text';
-		myMsg.innerText = document.getElementById('chat').value;
+		var el = document.createElement("div");
+		var user = document.createElement("div");
+		var userMsg = document.createElement("div");
+		var userimg = document.createElement("img");
+		
+		user.className = 'col-md-4 mt-2 py-2 text-center chat-user';
+
+		var spantext = document.createElement("span");
+		spantext.className = 'd-inline-block'; 
+		spantext.setAttribute('tabindex', '0');
+		spantext.setAttribute('data-toggle', 'data-toggle');
+		spantext.setAttribute('title', viewer);
+		userimg.setAttribute('style', 'height: 24px; width: 24px; pointer-events: none;');
+		$.ajax({
+			type: "POST",
+			url: "/user/image",
+			data: {username: viewer},
+			success: function(res){
+				userimg.setAttribute('src', '/'+res.image);
+			}
+		});
+		user.style.float = 'left';
+
+		userMsg.className = 'mb-2 col-sm-4 col-md-7 bg-lig py-2 mt-2 mb-2 chat-text';
+		userMsg.innerText = document.getElementById('chat').value;
 		socket.emit('chat', document.getElementById('chat').value, username, viewer);
-		myMsg.style.float = 'left';
-		chatbox.appendChild(myMsg);
+		document.getElementById('chat').value = "";
+		userMsg.style.float = 'left';
+		
+		chatbox.appendChild(el);
+		el.appendChild(user);
+		el.appendChild(userMsg);
+		user.appendChild(spantext);
+		spantext.appendChild(userimg);
 		document.getElementById('chat-box').scrollTop = 9999999;
 	}
 
@@ -247,18 +321,35 @@
 		var el = document.createElement("div");
 		var user = document.createElement("div");
 		var userMsg = document.createElement("div");
+		var userimg = document.createElement("img");
+		
+		user.className = 'col-md-4 mt-2 py-2 text-center chat-user';
 
-		user.className = 'col-sm-2 col-md-4 mt-2 py-2 text-center chat-user';
-		user.innerText = viewer;
+		var spantext = document.createElement("span");
+		spantext.className = 'd-inline-block'; 
+		spantext.setAttribute('tabindex', '0');
+		spantext.setAttribute('data-toggle', 'tooltip');
+		spantext.setAttribute('title', viewer);
+		userimg.setAttribute('style', 'height: 24px; width: 24px; pointer-events: none;');
+		$.ajax({
+			type: "POST",
+			url: "/user/image",
+			data: {username: viewer},
+			success: function(res){
+				userimg.setAttribute('src', '/'+res.image);
+			}
+		});
 		user.style.float = 'left';
 
-		userMsg.className = 'col-sm-4 col-md-7 bg-pri py-2 mt-2 mb-2 chat-text';
+		userMsg.className = 'mb-2 col-sm-4 col-md-7 bg-pri py-2 mt-2 mb-2 chat-text';
 		userMsg.innerText = msg;
 		userMsg.style.float = 'left';
 		
 		chatbox.appendChild(el);
 		el.appendChild(user);
 		el.appendChild(userMsg);
+		user.appendChild(spantext);
+		spantext.appendChild(userimg);
 		document.getElementById('chat-box').scrollTop = 9999999;
 		
 	});

@@ -3,29 +3,40 @@
     color: #fff;
     border-radius: 5px;
 }
-
 .bg-lig{
     background-color: #f0f0f0;
     border-radius: 5px;
 }
-
+#chat{
+    background-color: #fff;
+}
 .chat img{
     border-radius: 50%;
     width: 35px;
 }
-
-@media(max-width: 800px){
+.desc2{
+    display: none;
+}
+@media only screen and (max-width: 700px){
     .chat-user{
         max-width: 80px;
     }
     .chat-text{
-        max-width: 180px;
+        max-width: 250px;
+        margin-left: 10px;
     }
     .mychat-text{
-        max-width: 180px;
-        margin-left: 80px;
+        max-width: 250px;
+        margin-left: 10px;
+    }
+    .desc2{
+        display: block;
+    }
+    .desc1{
+        display: none;
     }
 }
+
 .logout:hover{
     cursor: pointer;
 }

@@ -1,7 +1,7 @@
 <% if (!user) { %>
 	<p>Welcome! Please <a href="/login">log in</a>.</p>
 <% } else { %>
-	<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
    
    <head>
@@ -24,6 +24,11 @@
       <link rel="stylesheet" href="/assets/vendor/owl-carousel/owl.carousel.css">
       <link rel="stylesheet" href="/assets/vendor/owl-carousel/owl.theme.css">
       <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+      <style>
+         .noti:hover{
+            cursor: pointer;
+         }
+      </style>
    </head>
    <body id="page-top">
       <%- include ('partials/navbar.ejs') %>
@@ -55,7 +60,15 @@
                   <% for( let i = 0; i < subscribersList.length; i++ ) { %>
                      <li>
                         <a href="/individual/<%= subscribersList[i].channel %>">
-                           <img class="img-fluid" alt="" src="/assets/img/s1.png">
+                           <% channelList.forEach((group) => { %>
+                              <% if(group.username == subscribersList[i].channel){ %>
+                                 <% if (group.image == undefined) { %>
+                                    <img class="img-fluid" alt="" src="uploads/user.png">
+                                 <% }else{ %>
+                                    <img class="img-fluid" alt="" src="<%= group.image %>">
+                                 <% } %>
+                              <% } %>  
+                           <% }) %>
                            <%= subscribersList[i].channel %>  
                         </a>
                      </li>
@@ -105,7 +118,11 @@
                                  <div class="item">
                                     <div class="category-item">
                                        <a href="/<%= streamer.username %>">
-                                          <img class="img-fluid" src="/assets/img/s1.png" alt="">
+                                          <% if (streamer.image == undefined) { %>
+                                             <img class="img-fluid" alt="" src="uploads/user.png">
+                                          <% }else{ %>
+                                             <img class="img-fluid" src="<%= streamer.image %>" alt="">
+                                          <% } %>
                                           <h6><%= streamer.username %> </h6>
                                           <p><%= streamer.totalViews %> views</p>
                                        </a>
@@ -134,14 +151,43 @@
                               </div>
                            </div>
                            <h6>Popular Channels</h6>
+                           <% if (user.usertype == "Streamer") { %>
+                              <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 osahan-navbar-search" style="visibility: hidden;">
+                                 <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for...">
+                                    <div class="input-group-append">
+                                       <button class="btn btn-light" type="button">
+                                       <i class="fas fa-search"></i> 
+                                       </button>
+                                    </div>
+                                 </div>
+                              </form>
+                           <% }else{ %>
+                              <form method="POST" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 osahan-navbar-search">
+                                 <div class="input-group">
+                                    
+                                       <input type="text" class="form-control" placeholder="Search for..." name="search" value="<%= search %>">
+                                    
+                                    <div class="input-group-append">
+                                       <button class="btn btn-light" type="submit">
+                                       <i class="fas fa-search"></i> 
+                                       </button>
+                                    </div>
+                                 </div>
+                              </form>
+                           <% } %> 
                         </div>
                      </div>
                         <% for(i=0; i < channelList.length; i++){ %>
-                           <div class="col-xl-3 col-sm-6 mb-3">
+                           <div class="col-xl-3 col-sm-6 mb-3 mt-4">
                               <div class="channels-card">
                                  <form id="subscribe">
                                     <div class="channels-card-image">
-                                       <a href="/individual/<%= channelList[i].username %>"><img class="img-fluid" src="/assets/img/s2.png" alt=""></a>
+                                       <% if (channelList[i].image == undefined) { %>
+                                          <a href="/individual/<%= channelList[i].username %>"><img class="img-fluid" src="uploads/user.png" alt=""></a>
+                                       <% }else{ %>
+                                          <a href="/individual/<%= channelList[i].username %>"><img class="img-fluid" src="<%= channelList[i].image %>" alt=""></a>
+                                       <% } %>
                                        <input type="hidden" class="subscribed">
                                        <div class="channels-card-image-btn">
                                           <input type="hidden" class="subscribed">
@@ -257,7 +303,7 @@
                   var i = document.createElement('i');
                   var span = document.createElement('span');
                   
-                  a.className = 'dropdown-item';
+                  a.className = 'dropdown-item noti';
                   i.className = 'fas fa-stream';
                   a.appendChild(i);
                   a.setAttribute("onclick", "removeNotification(this)");

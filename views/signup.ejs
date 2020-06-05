@@ -31,25 +31,51 @@
                         <h5 class="mt-2 mb-3">Welcome to Vidoe</h5>
                      </div>
                      <form method="POST">
+                        <% if(msg) { %>
+                           <div class="alert alert-danger alert-dismissible fade show">
+                              <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                                  &times;
+                              </button>
+                              <span>
+                                 <%= msg %>
+                              </span>
+                          </div>
+                        <% } %>
                         <div class="form-group">
                             <label>Full Name</label>
-                            <input type="text" class="form-control" placeholder="Enter full name" name="name">
-                         </div>
+                           <% if (typeof user != 'undefined') { %>
+                              <input type="text" class="form-control" placeholder="Enter full name" name="name" value="<%= user.name %>" required>
+                           <% } else{ %>
+                            <input type="text" class="form-control" placeholder="Enter full name" name="name" required>
+                           <% } %>
+                           </div>
                         <div class="form-group">
                             <label>Username</label>
-                            <input type="text" class="form-control" placeholder="Enter new username" name="username">
+                            <% if (typeof user != 'undefined') { %>
+                              <input type="text" class="form-control" placeholder="Enter new username" name="username" value="<%= user.username %>" required>
+                           <% } else{ %>
+                              <input type="text" class="form-control" placeholder="Enter new username" name="username" required>
+                           <% } %>
                          </div>
                         <div class="form-group">
                            <label>Email address</label>
-                           <input type="email" class="form-control" placeholder="Enter mail address" name="email">
+                           <% if (typeof user != 'undefined') { %>
+                              <input type="email" class="form-control" placeholder="Enter mail address" name="email" value="<%= user.email %>" required>
+                           <% } else{ %>
+                              <input type="email" class="form-control" placeholder="Enter mail address" name="email" required>
+                           <% } %>
                         </div>
                         <div class="form-group">
                            <label>Password</label>
-                           <input type="password" class="form-control" placeholder="Password" name="password">
+                           <% if (typeof user != 'undefined') { %>
+                              <input type="password" class="form-control" placeholder="Password" name="password" value="<%= user.password %>" required>
+                           <% } else{ %>
+                              <input type="password" class="form-control" placeholder="Password" name="password" required>
+                           <% } %>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">User Type</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="usertype">
+                            <select class="form-control" id="exampleFormControlSelect1" name="usertype" required>
                               <option>Viewer</option>
                               <option>Streamer</option>
                             </select>
